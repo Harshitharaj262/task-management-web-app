@@ -24,9 +24,5 @@ ChartJs.register(
 export default function LineGraph() {
   const options = { maintainAspectRatio: false, cutout: "60%" };
   const data = LineMockData;
-  return (
-    <div className="w-[80rem] h-[28rem] p-3">
-      <Line options={options} data={data} />
-    </div>
-  );
+  return <Line options={options} data={data} />;
 }

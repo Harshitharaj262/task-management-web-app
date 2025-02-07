@@ -1,24 +1,25 @@
-import Dashboard from "./components/Dashboard";
+import { BrowserRouter as Router } from "react-router-dom";
 import Sidebar from "./components/Sidebar";
 import Navbar from "./components/Navbar";
+import { RouteComponent } from "./routes/Route";
 import "./input.css";
-// import Login from "./components/Login";
-// import Header from "./components/Header";
+
 function App() {
   return (
-    <div className="flex bg-gray-100 min-h-screen w-full">
-      <div className="w-16 md:w-64">
+    <Router>
+      <div className="flex bg-gray-50 min-h-screen w-full">
+        {/* Sidebar */}
         <Sidebar />
-      </div>
 
-      {/* Main Content */}
-      <div className="flex flex-col w-full">
-        <Navbar />
-        <div className="flex-grow p-4">
-          <Dashboard />
+        {/* Main Content */}
+        <div className="flex flex-col w-full">
+          <Navbar />
+
+          <RouteComponent />
+          {/* This is where your routes will be rendered */}
         </div>
       </div>
-    </div>
+    </Router>
   );
 }
 

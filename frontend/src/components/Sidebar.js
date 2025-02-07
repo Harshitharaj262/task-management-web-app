@@ -5,6 +5,7 @@ import {
   UserGroupIcon,
   Square3Stack3DIcon,
 } from "@heroicons/react/24/outline";
+import { Link } from "react-router-dom";
 
 const Sidebar = () => {
   return (
@@ -14,34 +15,42 @@ const Sidebar = () => {
         <span>Task Management</span>
       </h1>
       <ul className="flex flex-col mt-5 text-xl">
-        <li
-          className="flex items-center py-3 px-2 space-x-4 hover:rounded hover:cursor-pointer 
+        <Link to="/dashboard">
+          <li
+            className="flex items-center py-3 px-2 space-x-4 hover:rounded hover:cursor-pointer 
         hover:bg-blue-600 hover:text-white"
-        >
-          <Squares2X2Icon className="inline-block w-6 h-6 mr-2 -mt-2" />
-          <span className="hidden md:inline">Dashboard</span>
-        </li>
-        <li
-          className="flex items-center py-3 px-2 space-x-4 hover:rounded hover:cursor-pointer 
+          >
+            <Squares2X2Icon className="inline-block w-6 h-6 mr-2 -mt-2" />
+            <span className="hidden md:inline">Dashboard</span>
+          </li>
+        </Link>
+        <Link to="/tasks">
+          <li
+            className="flex items-center py-3 px-2 space-x-4 hover:rounded hover:cursor-pointer 
         hover:text-white hover:bg-blue-600"
-        >
-          <DocumentTextIcon className="inline-block w-6 h-6 mr-2 -mt-2" />
-          <span className="hidden md:inline ">Tasks</span>
-        </li>
-        <li
-          className="flex items-center py-3 px-2 space-x-4 hover:rounded hover:cursor-pointer 
+          >
+            <DocumentTextIcon className="inline-block w-6 h-6 mr-2 -mt-2" />
+            <span className="hidden md:inline ">Tasks</span>
+          </li>
+        </Link>
+        <Link to="/projects">
+          <li
+            className="flex items-center py-3 px-2 space-x-4 hover:rounded hover:cursor-pointer 
         hover:text-white hover:bg-blue-600"
-        >
-          <Square3Stack3DIcon className="inline-block w-6 h-6 mr-2 -mt-2" />
-          <span className="hidden md:inline ">Projects</span>
-        </li>
-        <li
-          className="flex items-center py-3 px-2 space-x-4 hover:rounded hover:cursor-pointer 
+          >
+            <Square3Stack3DIcon className="inline-block w-6 h-6 mr-2 -mt-2" />
+            <span className="hidden md:inline ">Projects</span>
+          </li>
+        </Link>
+        <Link to="/teams">
+          <li
+            className="flex items-center py-3 px-2 space-x-4 hover:rounded hover:cursor-pointer 
         hover:text-white hover:bg-blue-600"
-        >
-          <UserGroupIcon className="inline-block w-6 h-6 mr-2 -mt-2" />
-          <span className="hidden md:inline ">Teams</span>
-        </li>
+          >
+            <UserGroupIcon className="inline-block w-6 h-6 mr-2 -mt-2" />
+            <span className="hidden md:inline ">Teams</span>
+          </li>
+        </Link>
       </ul>
     </div>
   );

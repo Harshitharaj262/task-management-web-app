@@ -9,7 +9,7 @@ export default function DoughnutChart() {
     cutout: "60%",
   };
   return (
-    <div className="w-[35rem] h-64">
+    <div>
       <Doughnut data={DoughnutMockData} options={options} />
     </div>
   );
