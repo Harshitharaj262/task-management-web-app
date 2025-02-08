@@ -6,11 +6,15 @@ const emptyData={
 }
 
 function taskDataReducer(state, action) {
-    if (!Object.keys(emptyData).includes(action.type)) {
-      throw new Error(`Unhandled action type: ${action.type}`);
-    }
-    return { ...state, ...{ [action.type]: action.value } };
+  switch (action.type) {
+      case "tasks":
+          return { ...state, tasks: Array.isArray(action.value) ? action.value : [...state.tasks, action.value] };
+      
+      default:
+          throw new Error(`Unhandled action type: ${action.type}`);
   }
+}
+
 
 
 function TaskDataProvider({children}){
