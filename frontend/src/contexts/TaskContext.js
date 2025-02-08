@@ -15,8 +15,6 @@ function taskDataReducer(state, action) {
   }
 }
 
-
-
 function TaskDataProvider({children}){
     const [state, dispatch] = useReducer(taskDataReducer, emptyData);
     const value = {

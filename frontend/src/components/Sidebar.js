@@ -51,6 +51,7 @@ const Sidebar = () => {
             <span className="hidden md:inline ">Teams</span>
           </li>
         </Link>
+        
       </ul>
     </div>
   );
