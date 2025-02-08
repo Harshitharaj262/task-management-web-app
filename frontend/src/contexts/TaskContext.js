@@ -5,10 +5,20 @@ const emptyData={
     tasks:[]
 }
 
-function TaskDataProvider({children}){
-    const value={
-        tasks:emptyData.tasks
+function taskDataReducer(state, action) {
+    if (!Object.keys(emptyData).includes(action.type)) {
+      throw new Error(`Unhandled action type: ${action.type}`);
     }
+    return { ...state, ...{ [action.type]: action.value } };
+  }
+
+
+function TaskDataProvider({children}){
+    const [state, dispatch] = useReducer(taskDataReducer, emptyData);
+    const value = {
+        state,
+        dispatch,
+      };
     return(
         <TaskContext.Provider value={value}>{children}</TaskContext.Provider>
     )

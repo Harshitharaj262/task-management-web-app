@@ -3,12 +3,13 @@ import Dashboard from "../components/Dashboard";
 import MainTaaskComponent from "../components/Tasks/MainTask";
 import Projects from "../components/Projects";
 import Teams from "../components/Teams";
+import { TaskDataProvider } from "../contexts/TaskContext";
 const RouteComponent = () => {
   return (
     <Routes>
       {/* Define Routes */}
       <Route path="/dashboard" element={<Dashboard />} />
-      <Route path="/tasks" element={<MainTaaskComponent />} />
+      <Route path="/tasks" element= {<TaskDataProvider><MainTaaskComponent /></TaskDataProvider>} />
       <Route path="/projects" element={<Projects />} />
       <Route path="/teams" element={<Teams />} />
 

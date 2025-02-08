@@ -3,8 +3,15 @@ import BoardHeader from "./BoardHeader";
 import { PlusIcon, ArrowUpIcon, ArrowDownIcon } from "@heroicons/react/24/solid";
 import TaskCard from "./TaskCard";
 import TaskModal from "./TaskModal";
+import { useTaskData } from "../../contexts/TaskContext";
 
 export default function MainTaskComponent() {
+  const taskDataContext = useTaskData();
+  const tasksDataState = taskDataContext.state;
+  const dispatchData = taskDataContext.dispatch;
+  const tasks=tasksDataState.tasks
+  const setTasks = (newTaskState) =>
+    dispatchData({ type: "tasks", value: newTaskState });
   const [isOpen, setIsOpen] = useState(false);
   const [taskData, setTaskData] = useState({
     title: "",
@@ -14,11 +21,6 @@ export default function MainTaskComponent() {
     status: "",
   });
 
-  const [tasks, setTasks] = useState([
-    { title: "Create a web app", description: "This is a mock description", startDate: "2025-03-02", endDate: "2025-03-10", status: "TODO",priority:"High" },
-    { title: "Design UI", description: "Mock UI design", startDate: "2025-03-05", endDate: "2025-03-12", status: "IN PROGRESS",priority:"Low" },
-    { title: "Write Documentation", description: "Create a user guide", startDate: "2025-03-07", endDate: "2025-03-15", status: "TODO", priority:"Medium"},
-  ]);
 
   const [filteredTasks, setFilteredTasks] = useState(tasks);
   const [sortOrders, setSortOrders] = useState({});
@@ -71,8 +73,8 @@ export default function MainTaskComponent() {
                     <h2 className="text-xl font-semibold flex items-center">
                       {list}
                       <span className="ml-2 bg-gray-300 text-gray-700 text-sm font-medium px-2 py-1 rounded-sm">
-                        {filteredTasks.filter((task) => task.status === list).length}
-                      </span>
+                        {filteredTasks.length>0 ? (filteredTasks.filter((task) => task.status === list).length) : 0}
+                      </span> 
                     </h2>
                     <button
                       onClick={() => toggleSort(list)}
@@ -87,7 +89,7 @@ export default function MainTaskComponent() {
                     </button>
                   </div>
                   <div className="flex flex-col space-y-2">
-                    {getSortedTasks(list).map((task) => (
+                    {filteredTasks.length>0 && getSortedTasks(list).map((task) => (
                       <TaskCard key={task.title} {...task} setIsOpen={setIsOpen} setTaskData={setTaskData} />
                     ))}
                   </div>
