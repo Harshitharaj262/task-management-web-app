@@ -15,7 +15,7 @@ export const getTasks = async (req, res) => {
 export const createTask = async (req, res) => {
     try {
         const { title, description, startDate, endDate, status, priority } = req.body;
-        const user = await User.findById(req.userId); // Assuming `userId` is available from JWT middleware
+        const user = await User.findById(req.userId);
 
         if (!user) {
             return res.status(404).json({ message: "User not found" });
@@ -79,5 +79,22 @@ export const deleteTask = async (req, res) => {
     }
 };
 
+export const filterTasks = async(req,res)=>{
+    try {
+        const {status, priority} = req.query
+        let filter={}
+        if (status) filter.status = { $in: status.split(",") };
+        if (priority) filter.priority = { $in: priority.split(",") };
+        const tasks = await Task.find(filter);
+        res.status(200).json({ message: "Fetched Filtered tasks",data:tasks });
+    
+        
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+        
+    }
+   
+    
+}
 
 export default { createTask, editTask, deleteTask, getTasks };

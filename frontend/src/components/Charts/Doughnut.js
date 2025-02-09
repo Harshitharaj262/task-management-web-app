@@ -1,16 +1,19 @@
 import { Doughnut } from "react-chartjs-2";
 import { Chart as ChartJs, Tooltip, Legend, ArcElement } from "chart.js";
-import DoughnutMockData from "../../mocks/doughnutMockData";
 ChartJs.register(Tooltip, Legend, ArcElement);
 
-export default function DoughnutChart() {
+export default function DoughnutChart({data}) {
   const options = {
     maintainAspectRatio: false,
     cutout: "60%",
   };
+  if (!data || !data.datasets || !data.labels) {
+    return <div>Loading Chart...</div>; 
+  }
   return (
     <div>
-      <Doughnut data={DoughnutMockData} options={options} />
+      
+      <Doughnut data={data} options={options} />
     </div>
   );
 }

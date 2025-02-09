@@ -1,7 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 import Dashboard from '../components/Dashboard';
 import MainTaskComponent from '../components/Tasks/MainTask';
-import Projects from '../components/Projects';
 import Teams from '../components/Teams';
 import LoginCard from '../components/LoginCard';
 import Authentication from '../components/Authentication';
@@ -42,14 +41,6 @@ const RouteComponent = () => {
         }
       />
 
-      <Route
-        path="/projects"
-        element={
-          <ProtectedRoute>
-            <Projects />
-          </ProtectedRoute>
-        }
-      />
 
       <Route
         path="/teams"

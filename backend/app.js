@@ -6,6 +6,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import userRouter from './routes/user.js'
 import taskRouter from './routes/task.js'
+import analyticsRouter from './routes/analytics.js'
 dotenv.config();
 
 
@@ -18,7 +19,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use('/api/user', userRouter);
 app.use('/api/tasks', taskRouter)
-
+app.use('/api/dashboard',analyticsRouter)
 
 mongoose.connect(process.env.MONGODB_URL)
   .then(() => {

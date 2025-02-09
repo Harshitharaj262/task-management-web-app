@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { PlusIcon, FunnelIcon } from "@heroicons/react/24/solid";
 import FilterModel from "./FilterModel";
+import Cookies from 'js-cookie'
 
 const BoardHeader = ({ handleNewCard, tasks, setFilteredTasks }) => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -22,6 +23,46 @@ const BoardHeader = ({ handleNewCard, tasks, setFilteredTasks }) => {
 
     setFilteredTasks(updatedTasks);
   }, [selectedFilters, tasks]);
+
+  // useEffect(() => {
+  //   const fetchTasks = async () => {
+  //     try {
+  //       let url = "http://localhost:3001/api/tasks";
+  
+  //       const queryParams = new URLSearchParams();
+  //       if (selectedFilters.status.length > 0) {
+  //         queryParams.append("status", selectedFilters.status.join(","));
+  //       }
+  //       if (selectedFilters.priority.length > 0) {
+  //         queryParams.append("priority", selectedFilters.priority.join(","));
+  //       }
+  
+  //       // If filters exist, update the URL
+  //       if (queryParams.toString()) {
+  //         url += `/filter?${queryParams.toString()}`;
+  //       }
+  
+  //       const response = await fetch(url, {
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           "Authorization": `Bearer ${Cookies.get("session")}`,
+  //         },
+  //       });
+  
+  //       if (response.ok) {
+  //         const data = await response.json();
+  //         setFilteredTasks(data);
+  //       } else {
+  //         console.error("Error fetching tasks:", response.statusText);
+  //       }
+  //     } catch (error) {
+  //       console.error("Fetch error:", error);
+  //     }
+  //   };
+  
+  //   fetchTasks();
+  // }, [selectedFilters]);
+  
 
   return (
     <>

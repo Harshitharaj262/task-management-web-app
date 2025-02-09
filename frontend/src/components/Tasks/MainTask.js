@@ -3,6 +3,7 @@ import BoardHeader from "./BoardHeader";
 import { PlusIcon, ArrowUpIcon, ArrowDownIcon } from "@heroicons/react/24/solid";
 import TaskCard from "./TaskCard";
 import TaskModal from "./TaskModal";
+import Cookies from 'js-cookie'
 import { useTaskData } from "../../contexts/TaskContext";
 
 export default function MainTaskComponent() {
@@ -14,6 +15,7 @@ export default function MainTaskComponent() {
   const setTasks = (newTaskState) => dispatchData({ type: "tasks", value: newTaskState });
 
   const [isOpen, setIsOpen] = useState(false);
+  const [action, setAction] = useState("")
   const [taskData, setTaskData] = useState({
     title: "",
     description: "",
@@ -28,10 +30,10 @@ export default function MainTaskComponent() {
 
   const lists = ["TODO", "IN PROGRESS", "DONE"];
   useEffect(() => {
-    console.log("Updated tasks:", tasks);
-    console.log("filtered task", filteredTasks)
-    // setFilteredTasks(tasks)
+    setFilteredTasks(tasks)
   }, [tasks]);
+
+
 
   function handleNewCard() {
     setTaskData({
@@ -45,17 +47,98 @@ export default function MainTaskComponent() {
     setIsOpen(true);
   }
 
-  function handleSaveTask(newTask) {
-    const updatedTasks = [...tasks, newTask];
-
-    setFilteredTasks(updatedTasks);
-    dispatchData({ type: "tasks", value: updatedTasks });
-
+  async function handleCreateTask(newTask) {
+    try {
+      const { title, description, startDate, endDate, status, priority } = newTask;
+  
+      const response = await fetch(`${process.env.REACT_APP_BASE_URL}/tasks`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${Cookies.get("session")}`,
+        },
+        body: JSON.stringify({
+          title,
+          description,
+          startDate,
+          endDate,
+          status:status.toUpperCase(),
+          priority
+        })
+      });
+  
+      const result = await response.json();
+      if (response.status !== 201) {
+        throw new Error(result.error);
+      }
+  
+      const updatedTasks = [...tasks, result.data];
+  
+      setFilteredTasks(updatedTasks);
+      dispatchData({ type: "tasks", value: updatedTasks });
+    } catch (err) {
+      console.log(err);
+    }
+    
   }
-  function handleDeleteTask(taskToDelete) {
-    const updatedTasks = tasks.filter((task) => task.title !== taskToDelete.title);
+  async function handleEditTask(updatedTask) {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_BASE_URL}/tasks/${updatedTask._id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${Cookies.get("session")}`,
+        },
+        body: JSON.stringify(updatedTask),
+      });
+  
+      const result = await response.json();
+      if (!response.ok) {
+        throw new Error(result.error || "Failed to update task");
+      }
+  
+      const updatedTasks = tasks.map((task) =>
+        task._id === updatedTask._id ? updatedTask : task
+      );
+  
+      setFilteredTasks(updatedTasks);
+      dispatchData({ type: "tasks", value: updatedTasks });
+      setIsOpen(false);
+    } catch (error) {
+      console.error("Error updating task:", error);
+    }
+  }
+    
+ async function handleDeleteTask(taskToDelete) {
+  try {
+    const response = await fetch(`${process.env.REACT_APP_BASE_URL}/tasks/${taskToDelete._id}`, {
+      method: "DELETE",
+      headers: {
+        "Authorization": `Bearer ${Cookies.get("session")}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to delete task");
+    }
+
+    const updatedTasks = tasks.filter((task) => task._id !== taskToDelete._id);
     setFilteredTasks(updatedTasks);
     dispatchData({ type: "tasks", value: updatedTasks });
+  } catch (error) {
+    console.error("Error deleting task:", error);
+  }
+}
+
+
+  async function handleSaveTask(newTask) {
+    if(action === 'edit'){
+      handleEditTask(newTask)
+    }else{
+      handleCreateTask(newTask)
+    }
+  
   }
 
   function toggleSort(list) {
@@ -98,7 +181,7 @@ export default function MainTaskComponent() {
                   </div>
                   <div className="flex flex-col space-y-2">
                     {filteredTasks.length > 0 && getSortedTasks(list).map((task) => (
-                      <TaskCard key={task.title} task={task} setIsOpen={setIsOpen} setTaskData={setTaskData} handleDeleteTask={handleDeleteTask} />
+                      <TaskCard key={task._id} task={task} setIsOpen={setIsOpen} setTaskData={setTaskData} handleDeleteTask={handleDeleteTask} setAction={setAction} />
                     ))}
                   </div>
                   <div className="flex justify-between items-center mt-4">

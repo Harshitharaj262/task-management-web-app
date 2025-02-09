@@ -61,8 +61,8 @@ export default function LoginCard() {
       let response
 
       const apiUrl = isSignup
-        ? "http://localhost:3001/api/user/signup"
-        : "http://localhost:3001/api/user/login";
+        ?`${process.env.REACT_APP_BASE_URL}/user/signup`
+        : `${process.env.REACT_APP_BASE_URL}/user/login`;
         const data = isSignup
         ? { username, email, password }
         : { email, password };

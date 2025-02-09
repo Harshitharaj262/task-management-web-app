@@ -1,14 +1,16 @@
 import { PencilIcon, ClockIcon, TrashIcon } from "@heroicons/react/24/outline";
 
-export default function TaskCard({ task, setIsOpen, setTaskData, handleDeleteTask }) {
-  const { title, description, startDate, endDate, status, priority } = task;
+export default function TaskCard({ task, setIsOpen, setTaskData, handleDeleteTask, setAction }) {
+  const { _id,title, description, startDate, endDate, status, priority } = task;
 
   const handleEdit = () => {
+    setAction("edit")
     setTaskData(task);
     setIsOpen(true);
   };
 
   const handleDelete = () => {
+    setAction("delete")
     if (window.confirm("Are you sure you want to delete this task?")) {
       setTaskData(task);
       handleDeleteTask(task);
@@ -50,7 +52,7 @@ export default function TaskCard({ task, setIsOpen, setTaskData, handleDeleteTas
           {endDate && (
             <div className="flex items-center space-x-1">
               <ClockIcon className="w-4" />
-              <span>{endDate}</span>
+              <span>{endDate.split("T")[0]}</span>
             </div>
           )}
         </div>

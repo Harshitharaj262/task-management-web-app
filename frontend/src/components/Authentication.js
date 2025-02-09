@@ -14,11 +14,11 @@ export default function Authentication({ children }) {
 
   return (
     <div className="flex bg-gray-50 min-h-screen w-full">
-        <Sidebar />
+        <Sidebar  handleLogout={handleLogout} />
 
       <div className="flex flex-col w-full">
 
-        <Navbar handleLogout={handleLogout} />
+        <Navbar />
 {children}
       </div>
     </div>

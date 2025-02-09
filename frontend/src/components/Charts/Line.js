@@ -21,8 +21,7 @@ ChartJs.register(
   Legend
 );
 
-export default function LineGraph() {
+export default function LineGraph({data}) {
   const options = { maintainAspectRatio: false, cutout: "60%" };
-  const data = LineMockData;
-  return <Line options={options} data={data} />;
+  return <Line options={options} data={LineMockData} />;
 }

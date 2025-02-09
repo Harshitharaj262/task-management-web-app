@@ -37,8 +37,8 @@ export default function TaskModal({ isOpen, setIsOpen, taskData, onSave }) {
             <div className="mt-4 space-y-4">
               <input name="title" placeholder="Title" value={task.title} onChange={handleChange} className="w-full border rounded p-2" />
               <textarea name="description" placeholder="Description" value={task.description} onChange={handleChange} className="w-full border rounded p-2" />
-              <input type="date" name="startDate" value={task.startDate} onChange={handleChange} className="w-full border rounded p-2" />
-              <input type="date" name="endDate" value={task.endDate} onChange={handleChange} className="w-full border rounded p-2" />
+              <input type="date" name="startDate" value={task.startDate.split("T")[0]} onChange={handleChange} className="w-full border rounded p-2" />
+              <input type="date" name="endDate" value={task.endDate.split("T")[0]} onChange={handleChange} className="w-full border rounded p-2" />
               <select name="status" value={task.status} onChange={handleChange} className="w-full border rounded p-2">
                 <option value="Todo">Todo</option>
                 <option value="In Progress">In Progress</option>
