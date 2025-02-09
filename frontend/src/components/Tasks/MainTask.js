@@ -24,26 +24,27 @@ export default function MainTaskComponent() {
     status: "Todo",
     priority: "Medium",
   });
+  const [listName, setListName] = useState("TODO"); // New state to track the current list
 
   const [filteredTasks, setFilteredTasks] = useState(tasks);
   const [sortOrders, setSortOrders] = useState({});
 
   const lists = ["TODO", "IN PROGRESS", "DONE"];
+  
   useEffect(() => {
     setFilteredTasks(tasks)
   }, [tasks]);
 
-
-
-  function handleNewCard() {
+  function handleNewCard(list) {
     setTaskData({
       title: "",
       description: "",
       startDate: "",
       endDate: "",
-      status: "TODO",
+      status: list, // Set default status based on list
       priority: "Medium",
     });
+    setListName(list); // Set the list name when adding a new card
     setIsOpen(true);
   }
 
@@ -79,8 +80,8 @@ export default function MainTaskComponent() {
     } catch (err) {
       console.log(err);
     }
-    
   }
+
   async function handleEditTask(updatedTask) {
     try {
       const response = await fetch(`${process.env.REACT_APP_BASE_URL}/tasks/${updatedTask._id}`, {
@@ -185,7 +186,7 @@ export default function MainTaskComponent() {
                     ))}
                   </div>
                   <div className="flex justify-between items-center mt-4">
-                    <button onClick={handleNewCard} className="font-medium text-gray-600 hover:text-gray-800 flex items-center gap-2">
+                    <button onClick={() => handleNewCard(list)} className="font-medium text-gray-600 hover:text-gray-800 flex items-center gap-2">
                       <PlusIcon className="w-5" />
                       <span className="text-[1rem]">Add a card</span>
                     </button>
@@ -196,8 +197,7 @@ export default function MainTaskComponent() {
           </div>
         </div>
       </div>
-      {isOpen && <TaskModal isOpen={isOpen} setIsOpen={setIsOpen} taskData={taskData} onSave={handleSaveTask} />}
+      {isOpen && <TaskModal isOpen={isOpen} setIsOpen={setIsOpen} taskData={taskData} onSave={handleSaveTask} listName={listName} />}
     </>
   );
 }
-

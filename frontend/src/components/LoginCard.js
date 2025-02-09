@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom"; 
-import Cookies from 'js-cookie'
+
 
 
 export default function LoginCard() {

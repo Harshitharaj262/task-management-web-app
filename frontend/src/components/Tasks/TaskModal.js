@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 
-export default function TaskModal({ isOpen, setIsOpen, taskData, onSave }) {
+export default function TaskModal({ isOpen, setIsOpen, taskData, onSave, listName }) {
   const [task, setTask] = useState(taskData || {
     title: "",
     description: "",
@@ -11,15 +11,34 @@ export default function TaskModal({ isOpen, setIsOpen, taskData, onSave }) {
     status: "Todo",
     priority: "Medium",
   });
+  const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setTask((prev) => ({ ...prev, [name]: value }));
   };
 
+  const validateForm = () => {
+    const newErrors = {};
+
+    if (!task.title) {
+      newErrors.title = "Title is required.";
+    }
+    if (task.startDate && task.endDate && task.startDate >= task.endDate) {
+      newErrors.endDate = "End date must be later than start date.";
+    }
+
+    setErrors(newErrors);
+
+    // Return true if no errors, false if there are errors
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSave = () => {
-    onSave(task);
-    setIsOpen(false);
+    if (validateForm()) {
+      onSave(task);
+      setIsOpen(false);
+    }
   };
 
   return (
@@ -35,15 +54,57 @@ export default function TaskModal({ isOpen, setIsOpen, taskData, onSave }) {
               Task Details
             </DialogTitle>
             <div className="mt-4 space-y-4">
-              <input name="title" placeholder="Title" value={task.title} onChange={handleChange} className="w-full border rounded p-2" />
-              <textarea name="description" placeholder="Description" value={task.description} onChange={handleChange} className="w-full border rounded p-2" />
-              <input type="date" name="startDate" value={task.startDate.split("T")[0]} onChange={handleChange} className="w-full border rounded p-2" />
-              <input type="date" name="endDate" value={task.endDate.split("T")[0]} onChange={handleChange} className="w-full border rounded p-2" />
+              <input
+                name="title"
+                placeholder="Title"
+                value={task.title}
+                onChange={handleChange}
+                className={`w-full border rounded p-2 ${errors.title ? 'border-red-500' : ''}`}
+              />
+              {errors.title && <p className="text-red-500 text-sm">{errors.title}</p>}
+              <textarea
+                name="description"
+                placeholder="Description"
+                value={task.description}
+                onChange={handleChange}
+                className="w-full border rounded p-2"
+              />
+              <input
+                type="date"
+                name="startDate"
+                value={task.startDate.split("T")[0]}
+                onChange={handleChange}
+                className={`w-full border rounded p-2 ${errors.startDate ? 'border-red-500' : ''}`}
+              />
+              <input
+                type="date"
+                name="endDate"
+                value={task.endDate.split("T")[0]}
+                onChange={handleChange}
+                className={`w-full border rounded p-2 ${errors.endDate ? 'border-red-500' : ''}`}
+              />
+              {errors.endDate && <p className="text-red-500 text-sm">{errors.endDate}</p>}
               <select name="status" value={task.status} onChange={handleChange} className="w-full border rounded p-2">
-                <option value="Todo">Todo</option>
-                <option value="In Progress">In Progress</option>
-                <option value="Done">Done</option>
+                {listName === "TODO" && (
+                  <>
+                    <option value="Todo">Todo</option>
+                  </>
+                )}
+                {listName === "IN PROGRESS" && (
+                  <>
+                    <option value="In Progress">In Progress</option>
+                  </>
+                )}
+                {listName === "DONE" && <option value="Done">Done</option>}
+                {(!listName || (listName !== "TODO" && listName !== "IN PROGRESS" && listName !== "DONE")) && (
+                  <>
+                    <option value="Todo">Todo</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Done">Done</option>
+                  </>
+                )}
               </select>
+
               <select name="priority" value={task.priority} onChange={handleChange} className="w-full border rounded p-2">
                 <option value="High">High</option>
                 <option value="Medium">Medium</option>
@@ -52,10 +113,18 @@ export default function TaskModal({ isOpen, setIsOpen, taskData, onSave }) {
             </div>
           </div>
           <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-            <button type="button" onClick={handleSave} className="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto">
+            <button
+              type="button"
+              onClick={handleSave}
+              className="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto"
+            >
               Save
             </button>
-            <button type="button" onClick={() => setIsOpen(false)} className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">
+            <button
+              type="button"
+              onClick={() => setIsOpen(false)}
+              className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
+            >
               Cancel
             </button>
           </div>
