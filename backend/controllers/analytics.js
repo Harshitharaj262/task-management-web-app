@@ -1,6 +1,6 @@
 import Task from '../models/task.js'
 import User from '../models/user.js'
-import formatDoughnutData from '../models/utils/formatDoughnutData.js';
+import formatDoughnutData from '../utils/formatDoughnutData.js';
 
 export const getAnalytics = async (req, res) => {
     try {

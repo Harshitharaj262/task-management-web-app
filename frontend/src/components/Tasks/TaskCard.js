@@ -1,16 +1,25 @@
 import { PencilIcon, ClockIcon, TrashIcon } from "@heroicons/react/24/outline";
+import { useDrag } from 'react-dnd';
 
 export default function TaskCard({ task, setIsOpen, setTaskData, handleDeleteTask, setAction }) {
-  const { _id,title, description, startDate, endDate, status, priority } = task;
+  const { title, endDate, status, priority } = task;
+
+  const [{ isDragging }, drag] = useDrag({
+    type: "task",
+    item: { task, targetStatus: status },
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+  });
 
   const handleEdit = () => {
-    setAction("edit")
+    setAction("edit");
     setTaskData(task);
     setIsOpen(true);
   };
 
   const handleDelete = () => {
-    setAction("delete")
+    setAction("delete");
     if (window.confirm("Are you sure you want to delete this task?")) {
       setTaskData(task);
       handleDeleteTask(task);
@@ -24,7 +33,10 @@ export default function TaskCard({ task, setIsOpen, setTaskData, handleDeleteTas
   };
 
   return (
-    <div className="bg-white shadow rounded-lg relative hover:border-2 hover:border-indigo-700 group p-2">
+    <div
+      ref={drag}
+      className={`bg-white shadow rounded-lg relative hover:border-2 hover:border-indigo-700 group p-2 ${status === "DONE" ? "line-through text-gray-500" : ""} ${isDragging ? "opacity-50" : ""}`}
+    >
       <button
         className="absolute top-2 right-8 text-gray-600 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
         onClick={handleEdit}
@@ -52,7 +64,7 @@ export default function TaskCard({ task, setIsOpen, setTaskData, handleDeleteTas
           {endDate && (
             <div className="flex items-center space-x-1">
               <ClockIcon className="w-4" />
-              <span>{endDate.split("T")[0]}</span>
+              <span>{endDate?.split("T")[0]}</span>
             </div>
           )}
         </div>

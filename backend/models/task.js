@@ -25,12 +25,7 @@ const taskSchema = new mongoose.Schema({
     type: String,
     enum: ['Low', 'Medium', 'High'],
   },
-  createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },  // Reference to the user who created the task
+  createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, 
 }, { timestamps: true });
-
-// Virtual method to check if task is overdue
-// taskSchema.virtual('isOverdue').get(function() {
-//   return this.dueDate < Date.now() && this.status !== 'completed';
-// });
 
 export default mongoose.model('Task', taskSchema);

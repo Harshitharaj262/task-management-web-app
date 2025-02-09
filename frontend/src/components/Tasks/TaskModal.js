@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 
@@ -8,10 +8,16 @@ export default function TaskModal({ isOpen, setIsOpen, taskData, onSave, listNam
     description: "",
     startDate: "",
     endDate: "",
-    status: "Todo",
+    status: "Todo", 
     priority: "Medium",
   });
   const [errors, setErrors] = useState({});
+
+  useEffect(() => {
+    if (taskData) {
+      setTask(taskData);
+    }
+  }, [taskData]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -30,7 +36,6 @@ export default function TaskModal({ isOpen, setIsOpen, taskData, onSave, listNam
 
     setErrors(newErrors);
 
-    // Return true if no errors, false if there are errors
     return Object.keys(newErrors).length === 0;
   };
 
@@ -53,6 +58,11 @@ export default function TaskModal({ isOpen, setIsOpen, taskData, onSave, listNam
             <DialogTitle as="h3" className="text-lg font-semibold text-gray-900">
               Task Details
             </DialogTitle>
+
+            <div className="mt-2">
+              <p className="text-gray-600">Status: <span className="font-semibold text-blue-600">{task.status}</span></p>
+            </div>
+
             <div className="mt-4 space-y-4">
               <input
                 name="title"
@@ -72,39 +82,27 @@ export default function TaskModal({ isOpen, setIsOpen, taskData, onSave, listNam
               <input
                 type="date"
                 name="startDate"
-                value={task.startDate.split("T")[0]}
+                value={task.startDate?.split("T")[0]}
                 onChange={handleChange}
                 className={`w-full border rounded p-2 ${errors.startDate ? 'border-red-500' : ''}`}
               />
               <input
                 type="date"
                 name="endDate"
-                value={task.endDate.split("T")[0]}
+                value={task.endDate?.split("T")[0]}
                 onChange={handleChange}
                 className={`w-full border rounded p-2 ${errors.endDate ? 'border-red-500' : ''}`}
               />
               {errors.endDate && <p className="text-red-500 text-sm">{errors.endDate}</p>}
+              
+              {/* Status Dropdown */}
               <select name="status" value={task.status} onChange={handleChange} className="w-full border rounded p-2">
-                {listName === "TODO" && (
-                  <>
-                    <option value="Todo">Todo</option>
-                  </>
-                )}
-                {listName === "IN PROGRESS" && (
-                  <>
-                    <option value="In Progress">In Progress</option>
-                  </>
-                )}
-                {listName === "DONE" && <option value="Done">Done</option>}
-                {(!listName || (listName !== "TODO" && listName !== "IN PROGRESS" && listName !== "DONE")) && (
-                  <>
-                    <option value="Todo">Todo</option>
-                    <option value="In Progress">In Progress</option>
-                    <option value="Done">Done</option>
-                  </>
-                )}
+                <option value="Todo">Todo</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Done">Done</option>
               </select>
 
+              {/* Priority Dropdown */}
               <select name="priority" value={task.priority} onChange={handleChange} className="w-full border rounded p-2">
                 <option value="High">High</option>
                 <option value="Medium">Medium</option>

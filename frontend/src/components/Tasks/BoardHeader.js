@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { PlusIcon, FunnelIcon } from "@heroicons/react/24/solid";
 import FilterModel from "./FilterModel";
-import Cookies from 'js-cookie'
 
 const BoardHeader = ({ handleNewCard, tasks, setFilteredTasks }) => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);

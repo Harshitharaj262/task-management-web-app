@@ -157,7 +157,7 @@ export default function LoginCard() {
             <button
               type="submit"
               className="w-full mt-4 p-2 bg-blue-600 text-white rounded"
-              disabled={loading} // Disable button during API request
+              disabled={loading}
             >
               {loading ? "Loading..." : isSignup ? "Sign Up" : "Login"}
             </button>

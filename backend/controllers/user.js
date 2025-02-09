@@ -49,4 +49,14 @@ export const loginUser = async (req, res) => {
     console.error(err);
     res.status(500).json({ message: 'Server error' });
   }
+
+ 
 };
+export const getAllUsers= async(req,res)=>{
+    try {
+            const users = await User.find();
+            res.status(200).json({ message: "Fetched all users", data: users });
+        } catch (error) {
+            res.status(400).json({ error: error.message });
+        }
+}
