@@ -43,7 +43,7 @@ export default function Dashboard() {
         <h2 className="text-3xl mb-4 -mt-4">Dashboard</h2>
 
         {/* Card Section */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 mb-6">
           <Card
             icon={<DocumentTextIcon className="h-8 w-8" />}
             title="Tasks"
@@ -60,7 +60,7 @@ export default function Dashboard() {
         {analyticsData.lineGraphData && (
           <div className="grid grid-cols-1 gap-6 my-8 min-h-96 h-auto">
             <div className="bg-white p-4 sm:p-6 dark:bg-gray-800 rounded-lg shadow-md flex flex-col justify-between h-full">
-              <h3 className="text-lg font-semibold mb-4 text-left">Tasks Data</h3>
+              <h3 className="text-lg font-semibold mb-4 text-left">Weekly Task Creation Overview</h3>
               <div className="w-full h-full">
                 <LineGraph data={analyticsData.lineGraphData} />
               </div>
@@ -69,24 +69,26 @@ export default function Dashboard() {
         )}
 
         {/* Doughnut Chart Section */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          {analyticsData.doughnutData && analyticsData.doughnutData.status && (
-            <div className="bg-white p-4 dark:bg-gray-800 rounded-lg shadow-md flex flex-col items-center">
-              <h3 className="text-lg font-semibold mb-4">Task Priority</h3>
-              <div className="w-full max-w-[20rem] flex justify-center">
-                <DoughnutChart data={analyticsData.doughnutData.status} />
-              </div>
-            </div>
-          )}
-          {analyticsData.doughnutData && analyticsData.doughnutData.priority && (
-            <div className="bg-white p-4 dark:bg-gray-800 rounded-lg shadow-md flex flex-col items-center">
-              <h3 className="text-lg font-semibold mb-4">Task Priority</h3>
-              <div className="w-full max-w-[20rem] flex justify-center">
-                <DoughnutChart data={analyticsData.doughnutData.priority} />
-              </div>
-            </div>
-          )}
-        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+         {analyticsData.doughnutData?.status && (
+    <div className="bg-white p-6 dark:bg-gray-800 rounded-lg shadow-md flex flex-col items-center w-full">
+      <h3 className="text-lg font-semibold mb-4 text-center">Task Status</h3>
+      <div className="w-full max-w-xs sm:max-w-md flex justify-center">
+        <DoughnutChart data={analyticsData.doughnutData.status} />
+      </div>
+    </div>
+  )}
+  
+  {analyticsData.doughnutData?.priority && (
+    <div className="bg-white p-6 dark:bg-gray-800 rounded-lg shadow-md flex flex-col items-center w-full">
+      <h3 className="text-lg font-semibold mb-4 text-center">Task Priority</h3>
+      <div className="w-full max-w-xs sm:max-w-md flex justify-center">
+        <DoughnutChart data={analyticsData.doughnutData.priority} />
+      </div>
+    </div>
+  )}
+</div>
+
       </div>
     </div>
   );

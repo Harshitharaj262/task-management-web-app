@@ -67,17 +67,24 @@ export const editTask = async (req, res) => {
 export const deleteTask = async (req, res) => {
     try {
         const { taskId } = req.params;
-        const task = await Task.findByIdAndDelete(taskId);
 
+     
+        const task = await Task.findById(taskId);
         if (!task) {
             return res.status(404).json({ message: "Task not found" });
         }
+        await User.findByIdAndUpdate(task.userId, {
+            $pull: { tasks: taskId } 
+        });
+
+        await Task.findByIdAndDelete(taskId);
 
         res.status(200).json({ message: "Task deleted successfully" });
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
 };
+
 
 
 

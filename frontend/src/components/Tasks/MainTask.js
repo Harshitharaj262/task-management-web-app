@@ -64,7 +64,7 @@ export default function MainTaskComponent() {
           description,
           startDate,
           endDate,
-          status: status.toUpperCase(),
+          status: status?.toUpperCase(),
           priority,
         }),
       });
@@ -148,7 +148,7 @@ export default function MainTaskComponent() {
   }
 
   function getSortedTasks(list) {
-    const listTasks = filteredTasks.filter((task) => task.status === list);
+    const listTasks = filteredTasks.filter((task) => task?.status === list);
     const sortOrder = sortOrders[list] || "Newest";
 
     return listTasks.sort((a, b) =>
@@ -189,7 +189,7 @@ export default function MainTaskComponent() {
           <h2 className="text-xl font-semibold flex items-center">
             {list}
             <span className="ml-2 bg-gray-300 text-gray-700 text-sm font-medium px-2 py-1 rounded-sm">
-              {filteredTasks.length > 0 ? filteredTasks.filter((task) => task.status === list).length : 0}
+              {filteredTasks.length > 0 ? filteredTasks.filter((task) => task?.status === list).length : 0}
             </span>
           </h2>
           <button onClick={() => toggleSort(list)} className="ml-2 text-gray-600 hover:text-gray-800">

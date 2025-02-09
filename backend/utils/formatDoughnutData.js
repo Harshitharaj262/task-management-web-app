@@ -1,4 +1,4 @@
-// Correct export syntax
+
 function formatDoughnutData(data1, data2) {
     let doughnutData = {
       status: {

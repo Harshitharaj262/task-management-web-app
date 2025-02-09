@@ -1,6 +1,7 @@
 import Task from '../models/task.js'
 import User from '../models/user.js'
 import formatDoughnutData from '../utils/formatDoughnutData.js';
+import formatLineData from '../utils/formatLineGraph.js';
 
 export const getAnalytics = async (req, res) => {
     try {
@@ -23,6 +24,8 @@ export const getAnalytics = async (req, res) => {
             },
             { $sort: { _id: 1 } }
           ]);
+
+          const lineChartData=formatLineData(weeklyMetrics)
           
           const statusDistribution = await Task.aggregate([
             { $group: { _id: "$status", count: { $sum: 1 } } },
@@ -34,7 +37,7 @@ export const getAnalytics = async (req, res) => {
           
           const doughnutChart = formatDoughnutData(statusDistribution,priorityDistribution)
       
-          res.json({ tasksCount:totalTasks, teamsCount:totalTeams, lineGraphData:weeklyMetrics, doughnutData:doughnutChart });
+          res.json({ tasksCount:totalTasks, teamsCount:totalTeams, lineGraphData:lineChartData, doughnutData:doughnutChart });
         
 
     } catch (error) {
