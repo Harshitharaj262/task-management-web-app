@@ -186,14 +186,14 @@ export default function MainTaskComponent() {
     return (
       <div ref={drop} className="bg-gray-100 p-4 rounded-lg shadow-lg w-1/3">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-semibold flex items-center">
+          <h2 className="text-md md:text-xl font-semibold flex items-center">
             {list}
             <span className="ml-2 bg-gray-300 text-gray-700 text-sm font-medium px-2 py-1 rounded-sm">
               {filteredTasks.length > 0 ? filteredTasks.filter((task) => task?.status === list).length : 0}
             </span>
           </h2>
           <button onClick={() => toggleSort(list)} className="ml-2 text-gray-600 hover:text-gray-800">
-            {sortOrders[list] === "Oldest" ? <ArrowUpIcon className="w-5 h-5" /> : <ArrowDownIcon className="w-5 h-5" />}
+            {sortOrders[list] === "Oldest" ? <ArrowUpIcon className="w-3 h-3 md:w-5 md:h-5" /> : <ArrowDownIcon className="w-3 h-3 md:w-5 md:h-5" />}
           </button>
         </div>
         <div className="flex flex-col space-y-2">
@@ -213,8 +213,8 @@ export default function MainTaskComponent() {
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <div className="flex-grow flex justify-center items-start ml-64">
-        <div className="grow">
+      <div className="flex-grow flex justify-start items-start ml-16 md:ml-64">
+        <div className="w-full">
           <div className="flex flex-col space-y-4">
             <BoardHeader handleNewCard={handleNewCard} tasks={tasks} setFilteredTasks={setFilteredTasks} />
             <div className="flex space-x-4 p-4 items-start">

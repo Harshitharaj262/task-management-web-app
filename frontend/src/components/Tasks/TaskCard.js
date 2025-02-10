@@ -52,7 +52,7 @@ export default function TaskCard({ task, setIsOpen, setTaskData, handleDeleteTas
 
       <div>
         <h3 className="text-md font-semibold">{title}</h3>
-        <div className="flex items-center my-2 space-x-2 text-sm text-gray-900">
+        <div className="flex flex-col sm:flex-row sm:items-center my-2 sm:space-x-2 space-y-2 sm:space-y-0 text-sm text-gray-900">
           {priority && (
             <span
               className={`px-2 py-1 rounded text-xs font-semibold ${priorityColors[priority] || "bg-gray-300"}`}

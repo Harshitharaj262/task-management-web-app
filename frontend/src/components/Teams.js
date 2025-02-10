@@ -40,7 +40,7 @@ export default function Teams() {
   if (error) return <div className="text-center p-4 text-red-500">Error: {error}</div>;
 
   return (
-    <div className="flex justify-center items-start p-4 ml-64">
+    <div className="flex-grow flex justify-center items-start p-4 ml-20 md:ml-64">
       <div className="w-full max-w-7xl p-4 sm:p-8">
         <h1 className="text-3xl font-semibold mb-4">Teams</h1>
 

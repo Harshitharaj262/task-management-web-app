@@ -38,7 +38,7 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="flex-grow flex justify-center items-start p-4 ml-64">
+    <div className="flex-grow flex justify-center items-start p-4 ml-20 md:ml-64">
       <div className="w-full max-w-7xl p-4 sm:p-8">
         <h2 className="text-3xl mb-4 -mt-4">Dashboard</h2>
 
