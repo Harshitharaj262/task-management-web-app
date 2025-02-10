@@ -18,23 +18,5 @@ const userSchema = new mongoose.Schema({
     },
     tasks: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Task' }],
 }, { timestamps: true });
-// // Hash password before saving user
-// userSchema.pre('save', async function(next) {
-//     if (this.isModified('password')) {
-//       this.password = await bcrypt.hash(this.password, 10);
-//     }
-//     next();
-//   });
-  
-//   // Method to compare password (for login)
-//   userSchema.methods.comparePassword = async function(password) {
-//     return await bcrypt.compare(password, this.password);
-//   };
-  
-//   // Method to generate JWT token
-//   userSchema.methods.generateAuthToken = function() {
-//     const token = jwt.sign({ userId: this._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-//     return token;
-//   };
 
 export default mongoose.model('User', userSchema);

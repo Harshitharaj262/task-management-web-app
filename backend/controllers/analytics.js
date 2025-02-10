@@ -8,22 +8,30 @@ export const getAnalytics = async (req, res) => {
         const totalTasks = await Task.countDocuments();
         const totalTeams = await User.countDocuments();
         const weeklyMetrics = await Task.aggregate([
-            {
-              $match: {
-                createdAt: {
-                  $gte: new Date(new Date().setDate(new Date().getDate() - (new Date().getDay() === 0 ? 6 : new Date().getDay() - 1))),
-                  $lt: new Date(new Date().setDate(new Date().getDate() + (7 - new Date().getDay())))
-                }
+          {
+            $match: {
+              createdAt: {
+                $gte: new Date(new Date().setUTCHours(0, 0, 0, 0) - (new Date().getUTCDay() * 24 * 60 * 60 * 1000)),
+                $lt: new Date(new Date().setUTCHours(23, 59, 59, 999)) 
               }
-            },
-            {
-              $group: {
-                _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
-                count: { $sum: 1 }
-              }
-            },
-            { $sort: { _id: 1 } }
-          ]);
+            }
+          },
+          {
+            $project: {
+              date: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } }
+            }
+          },
+          {
+            $group: {
+              _id: "$date",
+              count: { $sum: 1 }
+            }
+          },
+          {
+            $sort: { _id: 1 }
+          }
+        ]);
+        
 
           const lineChartData=formatLineData(weeklyMetrics)
           

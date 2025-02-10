@@ -4,8 +4,13 @@ import User from "../models/user.js";
 // Get all tasks
 export const getTasks = async (req, res) => {
     try {
-        const tasks = await Task.find();
-        res.status(200).json({ message: "Fetched all tasks", data: tasks });
+        const user = await User.findById(req.userId).populate("tasks");
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        res.status(200).json({ message: "Fetched user tasks", data: user.tasks });
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
